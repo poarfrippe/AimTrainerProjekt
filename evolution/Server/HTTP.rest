@@ -1,0 +1,6 @@
+POST http://localhost:36187/classic
+Content-Type: application/json
+
+{
+    "score": 7
+}
