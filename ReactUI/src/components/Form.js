@@ -8,6 +8,7 @@ const Form = () => {
 
     function submitForm(){
         setIsSubmitted(true);
+        
     }
 
 

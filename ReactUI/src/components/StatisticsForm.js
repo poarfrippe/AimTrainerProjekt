@@ -40,10 +40,12 @@ export default function CustomizedTables({mode}) {
   const [rows, setRows]=useState();
 
   function getstats(mode) {
-    fetch(`http://89.107.108.231:18787/profile/${mode}/` + localStorage.getItem("username")).then(response => response.json()).then(data => { setRows(data) }).catch(err => {
-      setRows(undefined)
-    }
-    )
+    fetch(`http://89.107.108.231:18787/profile/${mode}/` + localStorage.getItem("username"))
+      .then(response => response.json())
+      .then(data => { setRows(data) })
+      .catch(err => {
+        setRows(undefined)
+      })
   }
 
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function CustomizedTables({mode}) {
               <StyledTableCell>Try No.</StyledTableCell>
               <StyledTableCell >Score</StyledTableCell>
               <StyledTableCell >Accuracy</StyledTableCell>
-              <StyledTableCell >Hits/sec</StyledTableCell>
+              <StyledTableCell >Clicks/sec</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -70,9 +72,9 @@ export default function CustomizedTables({mode}) {
                 <StyledTableCell component="th" scope="row">{index + 1} </StyledTableCell>
                 <StyledTableCell className="rowname">{row.score}</StyledTableCell>
                 <StyledTableCell className="rowname">{row.trefferquote}</StyledTableCell>
-                <StyledTableCell className="rowname">{row.anschlaege}</StyledTableCell>
+                <StyledTableCell className="rowname">{row.anschlaegeProSekunde}</StyledTableCell>
               </StyledTableRow>
-            )): <p>{`You have not played ${mode} mode yet.`}</p>}
+            )): <p>{`You have not played ${mode} mode yet, or aren't signed in.`}</p>}
           </TableBody>
         </Table>
         </TableContainer>

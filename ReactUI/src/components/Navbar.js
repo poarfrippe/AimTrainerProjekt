@@ -3,7 +3,7 @@ import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-function Navbar() {
+function Navbar(username) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
@@ -22,11 +22,11 @@ function Navbar() {
     showButton();
   }, []);
 
-  let loginodersignup;
-  if (localStorage.getItem('username') == "guest" || localStorage.getItem('username') == undefined || localStorage.getItem('username') == "undefined") {
-    loginodersignup = <Button buttonStyle='btn--outline' linkto="/sign-up">Sign Up</Button>
+  let signuporUser
+  if (username.username == "guest" || username.username == undefined || username.username == "undefined") {
+    signuporUser = <Button buttonStyle='btn--outline' linkto="/sign-up">Sign Up</Button>
   } else {
-    loginodersignup = <Button buttonStyle='btn--primary' linkto="/statistics">{localStorage.getItem('username')}</Button>
+    signuporUser = <Button buttonStyle='btn--primary' linkto="/">{username.username}</Button>
   }
 
   window.addEventListener('resize', showButton);
@@ -49,7 +49,17 @@ function Navbar() {
               </Link>
             </li>
 
-            
+            <li className='nav-item'>
+              <Link to='/statistics' className='nav-links' onClick={closeMobileMenu}>
+                Statistics
+              </Link>
+            </li>
+
+            <li className='nav-item'>
+              <Link to='/settings' className='nav-links' onClick={closeMobileMenu}>
+                Settings
+              </Link>
+            </li>
 
             <li>
               <Link
@@ -62,7 +72,7 @@ function Navbar() {
             </li>
 
           </ul>
-          {button && loginodersignup}
+          {button && signuporUser}
         </div>
       </nav>
     </>

@@ -89,7 +89,7 @@ app.post("/register", (req, res) => {
     if (!username || !password || !email) return res.sendStatus(400);
   
     checkUsername(username, (username) => {
-      if (!username) return res.status(400).send("kloppit net");
+      if (!username) return res.status(400).send("kloppit net, username schun besetzt");
       let sql = "INSERT INTO benutzer (`email`, `username`, `passwort`) VALUES ('" + email + "', '" + username + "', '" + password + "')";
       con.query(sql, function (err, result) {
         if (err) throw err;
