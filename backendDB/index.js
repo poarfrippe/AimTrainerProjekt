@@ -78,26 +78,42 @@ app.get("/profile/flick/:username", (req, res) =>{
 
 app.post("/register", (req, res) => {
 
-    console.log("user probiert zu registrieren")
-
     let username = req.body.username;
     let password = req.body.password;
     let email = req.body.email;
 
-    console.log(username)
+    console.log("user " + username + " probiert zu registrieren")
+    try {
+
+    //funktioniert, geht aber bei return ahnscheinend nur aus den callback raus und unten wird die Email dann trotzdem inserted und deswegen crasht es trotzdem
+
+    checkemail(email, () => {                   //wird als callback uebergeben und dann in der funktion ausgefuhrt oder auch nicht
+        console.log("email schun besetzt")
+        res.status(406).send("kloppit net, email schun besetzt")
+        throw "schnell raus raus raus!!"
+    });
+
 
     if (!username || !password || !email) return res.sendStatus(400);
   
-    checkUsername(username, (username) => {
-      if (!username) return res.status(400).send("kloppit net, username schun besetzt");
-      let sql = "INSERT INTO benutzer (`email`, `username`, `passwort`) VALUES ('" + email + "', '" + username + "', '" + password + "')";
-      con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log("user hat registriert glabiholt")
-        return res.status(200).send('kloppit')
-        //return res.redirect(302, "http://localhost:36187/");
-      });
-    });
+    
+        checkUsername(username, (username) => {
+            if (!username) return res.status(405).send("kloppit net, username schun besetzt");
+            let sql = "INSERT INTO benutzer (`email`, `username`, `passwort`) VALUES ('" + email + "', '" + username + "', '" + password + "')";
+            con.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log("user hat registriert glabiholt")
+                return res.status(200).send('kloppit')
+                //return res.redirect(302, "http://localhost:36187/");
+            });
+        });
+
+    } catch (error) {
+        console.log("Some Error: ")
+        console.log(error)
+    }
+
+    
 });
   
 const checkUsername = (username, createUser) => {
@@ -107,6 +123,15 @@ const checkUsername = (username, createUser) => {
         createUser(username);
     });
 };
+
+function checkemail (email, alreadyexists) {
+    con.query("SELECT * FROM benutzer WHERE `email` = ?", [email], function (err, result, fields) {
+        if(err) throw err;
+        if (result.length !== 0) {
+            alreadyexists()
+        } 
+    })
+}
 
 app.post("/login", (req, res) => {
 

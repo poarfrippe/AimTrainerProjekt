@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
 
 
-//dornoch bon login schaugen wosfuer responsecode kimp und donn holt username in local storage speichern oder net....
 const useForm=(callback, validateInfo) =>{
     const [values, setValues]=useState({
         username: "",
@@ -9,6 +8,7 @@ const useForm=(callback, validateInfo) =>{
         password: "",
         password2:""
     });
+
     const [errors, setErrors]=useState({});
     const [isSubmitting, setIsSubmitting]=useState(false)
 
@@ -50,8 +50,11 @@ const useForm=(callback, validateInfo) =>{
                         }).then(function (response) {
                             if (response.status == 200) {
                                 localStorage.setItem("username", username);
-                            } else {
-                                console.log("nana, i hon gelogen, den accoutn hots decht net erstellt...")
+                                callback();
+                            } else if (response.status == 405) {
+                                setErrors({username: "username is already registered"})
+                            } else if (response.status == 406) {
+                                setErrors({email: "email is allready connected to other user"})
                             }
                             return response.text()
                         }).then(function (text){
@@ -73,20 +76,19 @@ const useForm=(callback, validateInfo) =>{
             console.log("username problem")
         }
 
-        //localStorage.setItem("username", username);
+        setErrors(validateInfo(values))         //brauche oben irgendwie trotzdem die ganzen ifs weil das faxen macht und immer eins hinterher ist
+        //console.log(errors)
 
-        setErrors(validateInfo(values))
         setIsSubmitting(true);
     }
 
     useEffect(()=>{
         if(Object.keys(errors).length===0 && isSubmitting){
-            callback();
+            //callback();
         }
-    }, [errors]
-    );
+    }, [errors]);
 
-    return {handleChange, values, handleSubmit, errors, username, email, password};
+    return {handleChange, values, handleSubmit, errors};
 };
 
 export default useForm;
