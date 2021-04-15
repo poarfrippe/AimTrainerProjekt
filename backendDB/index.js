@@ -83,22 +83,15 @@ app.post("/register", (req, res) => {
     let email = req.body.email;
 
     console.log("user " + username + " probiert zu registrieren")
-    try {
-
-    //funktioniert, geht aber bei return ahnscheinend nur aus den callback raus und unten wird die Email dann trotzdem inserted und deswegen crasht es trotzdem
-
-    checkemail(email, () => {                   //wird als callback uebergeben und dann in der funktion ausgefuhrt oder auch nicht
-        console.log("email schun besetzt")
-        res.status(406).send("kloppit net, email schun besetzt")
-        throw "schnell raus raus raus!!"
-    });
-
 
     if (!username || !password || !email) return res.sendStatus(400);
-  
-    
-        checkUsername(username, (username) => {
-            if (!username) return res.status(405).send("kloppit net, username schun besetzt");
+
+    checkUser(username, email, (username) => {
+        if (username == -1) {
+            return res.status(405).send("kloppit net, username schun besetzt");
+        } else if (username == -2) {
+            return res.status(406).send("kloppit net, email schun besetzt");       //irgendwie wenn man zuerst username schon in der DB vorhanden ist und man das dann ausbessert und die Email auch schon vorhandnen ist kommt so: cannot set headers after they are sent to client....
+        } else {
             let sql = "INSERT INTO benutzer (`email`, `username`, `passwort`) VALUES ('" + email + "', '" + username + "', '" + password + "')";
             con.query(sql, function (err, result) {
                 if (err) throw err;
@@ -106,32 +99,28 @@ app.post("/register", (req, res) => {
                 return res.status(200).send('kloppit')
                 //return res.redirect(302, "http://localhost:36187/");
             });
-        });
+        }
+    });
 
-    } catch (error) {
-        console.log("Some Error: ")
-        console.log(error)
-    }
 
     
 });
   
-const checkUsername = (username, createUser) => {
+const checkUser = (username, email, createUser) => {
     con.query("SELECT `username` FROM benutzer WHERE `username` = ?", [username], function (err, result, fields) {
         if (err) throw err;
-        if (result?.length > 0) return createUser(undefined);
-        createUser(username);
+        if (result?.length > 0){
+            return createUser(-1);
+        } 
     });
-};
-
-function checkemail (email, alreadyexists) {
     con.query("SELECT * FROM benutzer WHERE `email` = ?", [email], function (err, result, fields) {
         if(err) throw err;
-        if (result.length !== 0) {
-            alreadyexists()
-        } 
+        if (result.length > 0) {
+            return createUser(-2)
+        }
+        return createUser(username)
     })
-}
+};
 
 app.post("/login", (req, res) => {
 

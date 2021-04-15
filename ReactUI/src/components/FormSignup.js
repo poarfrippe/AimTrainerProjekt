@@ -3,9 +3,9 @@ import useForm from './useForm'
 import validate from './validateInfo'
 import "./Form.css"
 
-const FormSignup = ({submitForm}) => {
+const FormSignup = ({submitForm, setusername}) => {
     
-    const {handleChange, values, handleSubmit, errors} = useForm(submitForm, validate);
+    const {handleChange, values, handleSubmit, errors} = useForm(submitForm, validate, setusername);
 
     return (
         <div className="form-content-right">
@@ -40,7 +40,7 @@ const FormSignup = ({submitForm}) => {
                     {errors.password2 && <p>{errors.password2}</p>} 
                 </div>
                 <button className="form-input-btn" type="submit">Sign Up</button>
-                <span className="form-input-login">Already have an account? Login <a href="#">here</a> </span>
+                <span className="form-input-login">Already have an account? Login <a href="/sign-in">here</a> </span>
             </form>
         </div>
     )

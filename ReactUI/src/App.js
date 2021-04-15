@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './components/pages/Home';
 import Statistics from './components/pages/Statistics';
 import SignUp from './components/pages/SignUp';
+import SignIn from './components/pages/SignIn';
 import Settings from './components/pages/Settings';
 
 
@@ -30,7 +31,8 @@ function App() {
         <Switch>
           <Route path="/settings" component={Settings} />
           <Route path="/statistics" component={Statistics} />
-          <Route path="/sign-up" component={SignUp}/>
+          <Route path="/sign-up" setusername={setusername} component={SignUp}/>
+          <Route path="/sign-in" setusername={setusername} component={SignIn}/>
           <Route path='/' exact component={Home} />
         </Switch>
       </Router>

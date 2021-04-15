@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 
 
-const useForm=(callback, validateInfo) =>{
+const useForm=(callback, validateInfo, setusername) =>{
     const [values, setValues]=useState({
         username: "",
         email: "",
@@ -51,6 +51,7 @@ const useForm=(callback, validateInfo) =>{
                             if (response.status == 200) {
                                 localStorage.setItem("username", username);
                                 callback();
+                                setusername()       //ahnschienend not a function...
                             } else if (response.status == 405) {
                                 setErrors({username: "username is already registered"})
                             } else if (response.status == 406) {

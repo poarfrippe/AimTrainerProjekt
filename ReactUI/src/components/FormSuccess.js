@@ -3,7 +3,7 @@ import React from 'react'
 const FormSuccess = () => {
     
     //window.location.reload(true);
-
+    
     return (
         <div className="form-content-right">
             <div className="form-success">Your account has been successfully registered!</div>
