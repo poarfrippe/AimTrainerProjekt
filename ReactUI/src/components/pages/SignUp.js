@@ -6,6 +6,6 @@ export default function SignUp(setusername){
     
 
     return (
-        <Form setusername={setusername}/>
+        <Form setusername={setusername} forSignUp={true}/>
     );
 }

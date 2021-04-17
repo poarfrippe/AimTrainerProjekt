@@ -124,27 +124,26 @@ const checkUser = (username, email, createUser) => {
 
 app.post("/login", (req, res) => {
 
-    var username = req.body.username
-    var password = req.body.password
+    let username = req.body.username
+    let password = req.body.password
 
-    con.query("SELECT `username`, `passwort` FROM benutzer", function (err, result, fields) {
+    console.log(username + " will inloggen!")
+    con.query("SELECT `username`, `passwort` FROM benutzer WHERE `username` = ?", [username] , function (err, result, fields) {
         if(err) throw err;
-        while(i<10){
-            if(typeof(result[i]) == 'undefined'){
-                break;
-            }
-            if(result[i].username !== username && result[i].password !== password){
-                console.log("hot nit gehittet")
-                ++i;
+        if (result.length > 1) {
+            return res.status(400).send('do isch gorawian epes folsch gongen...')
+        } else if (result.length <= 0) {
+            return res.status(405).send('username gibs net')
+        } else {
+            if (result[0].passwort == password) {
+                console.log("login check")
+                return res.status(200).send('kloppit a')
             } else {
-                console.log("Anmeldung erfolgreich")
-                return res.status(200);                
+                return res.status(406).send("folsches password")
             }
-        }    
-    })    
-    console.log(req.body.username)
-    console.log(req.body.pswdli)
-    res.status(404)
+        }
+    })
+    
 })
 
 app.post("/classic", (req, res) => {

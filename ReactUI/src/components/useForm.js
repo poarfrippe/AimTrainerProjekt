@@ -83,13 +83,45 @@ const useForm=(callback, validateInfo, setusername) =>{
         setIsSubmitting(true);
     }
 
+    const handleSubmitSignIn= e=>{
+        e.preventDefault();
+
+        username = e.target.username.value
+        password = e.target.password.value
+
+        fetch("http://89.107.108.231:18787/login", {
+            method: "post",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                "username": username,
+                "password": password
+            })
+        }).then(function (response) {
+            if (response.status == 200) {
+                localStorage.setItem("username", username);
+                callback();
+                setusername()       //ahnschienend not a function...
+            } else if (response.status == 405) {
+                setErrors({username: "username does not exist"})
+            } else if (response.status == 406) {
+                setErrors({password: "wrong Password"})
+            }
+            return response.text()
+        }).then(function (text){
+            console.log("response vom post: " + text)
+        }).catch(function (error) {
+            console.log(error)
+        })
+
+    }
+
     useEffect(()=>{
         if(Object.keys(errors).length===0 && isSubmitting){
             //callback();
         }
     }, [errors]);
 
-    return {handleChange, values, handleSubmit, errors};
+    return {handleChange, values, handleSubmit, errors, handleSubmitSignIn};
 };
 
 export default useForm;

@@ -3,7 +3,7 @@ import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-function Navbar(username) {
+function Navbar({username}) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
@@ -23,10 +23,10 @@ function Navbar(username) {
   }, []);
 
   let signuporUser
-  if (username.username == "guest" || username.username == undefined || username.username == "undefined") {
+  if (username == "guest" || username == undefined || username == "undefined") {
     signuporUser = <Button buttonStyle='btn--outline' linkto="/sign-up">Sign Up</Button>
   } else {
-    signuporUser = <Button buttonStyle='btn--primary' linkto="/">{username.username}</Button>
+    signuporUser = <Button buttonStyle='btn--primary' linkto="#">{username}</Button>
   }
 
   window.addEventListener('resize', showButton);
