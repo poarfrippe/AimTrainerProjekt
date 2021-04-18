@@ -31,8 +31,12 @@ function App() {
         <Switch>
           <Route path="/settings" component={Settings} />
           <Route path="/statistics" component={Statistics} />
-          <Route path="/sign-up" setusername={setusername} component={SignUp}/>
-          <Route path="/sign-in" setusername={setusername} component={SignIn}/>
+          <Route path="/sign-up">
+            <SignUp setusername={setusername}/>
+          </Route>
+          <Route path="/sign-in">
+            <SignIn setusername={setusername}/>
+          </Route>
           <Route path='/' exact component={Home} />
         </Switch>
       </Router>

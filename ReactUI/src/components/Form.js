@@ -9,6 +9,7 @@ const Form = ({setusername, forSignUp}) => {
 
     function submitForm(){
         setIsSubmitted(true);
+        setusername(localStorage.getItem("username"))
     }
 
 
@@ -19,7 +20,7 @@ const Form = ({setusername, forSignUp}) => {
                     <div className="form-content-left">
                         <img src="images/Login.png" alt="" className="form-img"/>
                     </div>
-                    {!isSubmitted ? <FormSignup submitForm={submitForm} setusername={setusername}/> : <FormSuccess forSignUp={forSignUp}/>}
+                    {!isSubmitted ? <FormSignup submitForm={submitForm}/> : <FormSuccess forSignUp={forSignUp}/>}
                 </div>
             </>
         );
