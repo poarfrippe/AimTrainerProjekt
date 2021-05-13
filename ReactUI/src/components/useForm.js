@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 
+const serverIP = "localhost"
 
 const useForm=(callback, validateInfo) =>{
     const [values, setValues]=useState({
@@ -39,7 +40,7 @@ const useForm=(callback, validateInfo) =>{
                     if (password2 === password) {
                         console.log("passt alles!!")
 
-                        fetch("http://89.107.108.231:18787/register", {
+                        fetch(`http://${serverIP}:18787/register`, {
                             method: "post",
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({
@@ -88,7 +89,7 @@ const useForm=(callback, validateInfo) =>{
         username = e.target.username.value
         password = e.target.password.value
 
-        fetch("http://89.107.108.231:18787/login", {
+        fetch(`http://${serverIP}:18787/login`, {
             method: "post",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

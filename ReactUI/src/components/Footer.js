@@ -10,7 +10,7 @@ function Footer() {
         <div class='social-media-wrap'>
           <div class='footer-logo'>
             <Link to='/' className='social-logo'>
-              Aimtrainer
+              AimHirte
             </Link>
           </div>
           <small class='website-rights'>FPS GmbH © 2021</small>

@@ -10,6 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import "./StatisticsForm.css";
 
 
+const serverIP = "localhost"
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -40,7 +42,7 @@ export default function CustomizedTables({mode}) {
   const [rows, setRows]=useState();
 
   function getstats(mode) {
-    fetch(`http://89.107.108.231:18787/profile/${mode}/` + localStorage.getItem("username"))
+    fetch(`http://${serverIP}:18787/profile/${mode}/` + localStorage.getItem("username"))
       .then(response => response.json())
       .then(data => { setRows(data) })
       .catch(err => {
